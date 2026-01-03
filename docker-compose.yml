@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres:16
+    container_name: approval_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: approval_user
+      POSTGRES_PASSWORD: approval_pass
+      POSTGRES_DB: approval_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U approval_user -d approval_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
